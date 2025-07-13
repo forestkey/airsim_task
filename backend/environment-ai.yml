@@ -1,0 +1,66 @@
+name: airsim-drone-ai
+channels:
+  - defaults
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.12
+  - pip
+  - numpy
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - jupyter
+  - ipykernel
+  
+  # Deep Learning frameworks
+  - pytorch::pytorch>=2.1.0
+  - pytorch::torchvision
+  - pytorch::torchaudio
+  - cudatoolkit=11.8  # or latest compatible version
+  
+  # Development tools
+  - black
+  - isort
+  - pytest
+  - mypy
+  
+  - pip:
+    # Core drone control (compatible with Python 3.12)
+    - fastapi>=0.104.1
+    - uvicorn[standard]>=0.24.0
+    - airsim>=1.8.1
+    - pydantic>=2.5.0
+    - websockets>=12.0
+    - aiofiles>=23.2.1
+    
+    # AI/ML specific packages
+    - transformers>=4.36.0
+    - stable-baselines3>=2.2.0
+    - gymnasium>=0.29.0
+    - opencv-python>=4.8.0
+    - tensorboard>=2.15.0
+    - wandb>=0.16.0
+    
+    # Computer Vision
+    - ultralytics>=8.0.0  # YOLO
+    - supervision>=0.17.0
+    
+    # Reinforcement Learning
+    - ray[rllib]>=2.9.0
+    - dm-tree>=0.1.8
+    
+    # LLM Integration
+    - langchain>=0.1.0
+    - openai>=1.0.0
+    - tiktoken>=0.5.0
+    
+    # Simulation & Robotics
+    - gym-pybullet-drones>=2.0.0
+    - pettingzoo>=1.24.0
+    
+    # Utilities
+    - python-dotenv>=1.0.0
+    - rich>=13.7.0
+    - typer>=0.9.0 
