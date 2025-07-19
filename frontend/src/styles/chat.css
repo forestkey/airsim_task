@@ -3,11 +3,46 @@
   text-orientation: mixed;
 }
 
-/* 添加一些过渡动画效果 */
+/* 聊天界面过渡动画效果 */
 .chat-interface {
   transition: transform 0.3s ease-in-out;
 }
 
 .chat-interface-minimized {
   transform: translateX(100%);
+}
+
+/* 确保聊天窗口在最上层 */
+[class*="z-[9999]"] {
+  z-index: 9999 !important;
+}
+
+/* AI助手按钮动画 */
+[class*="z-[9998]"] {
+  z-index: 9998 !important;
+}
+
+/* 防止滚动条影响布局 */
+body.chat-open {
+  overflow-x: hidden;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  /* 在移动端，聊天窗口占满整个屏幕 */
+  .fixed.right-0.top-1\/2.-translate-y-1\/2.w-96 {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    top: 0;
+    transform: translateY(0);
+    border-radius: 0;
+  }
+}
+
+/* 平板适配 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .fixed.right-0.top-1\/2.-translate-y-1\/2.w-96 {
+    width: 350px;
+  }
 } 

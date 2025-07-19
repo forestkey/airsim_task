@@ -5,14 +5,18 @@ import { MessageList } from './MessageList'
 import { MessageInput } from './MessageInput'
 import { chatService, ChatMessage } from '@/src/services/chatService'
 import { Button } from '../../../components/ui/Button'
-import { Trash2, Minimize2, Maximize2 } from 'lucide-react'
+import { Trash2, X } from 'lucide-react'
 import '@/src/styles/chat.css'
 
-export const ChatInterface: React.FC = () => {
+interface ChatInterfaceProps {
+  isVisible: boolean
+  onClose: () => void
+}
+
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isVisible, onClose }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -107,24 +111,28 @@ export const ChatInterface: React.FC = () => {
     await chatService.clearSession()
   }
 
-  if (isMinimized) {
-    return (
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 bg-white rounded-l-lg shadow-lg p-3 flex flex-col items-center gap-2 border-l border-t border-b border-gray-200">
-        <span className="text-sm font-medium writing-mode-vertical">AI 助手</span>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => setIsMinimized(false)}
-          className="h-8 w-8 p-1"
-        >
-          <Maximize2 className="h-4 w-4 rotate-90" />
-        </Button>
-      </div>
-    )
-  }
-
   return (
-    <div className="fixed right-0 top-1/2 -translate-y-1/2 w-96 h-[600px] bg-white rounded-l-lg shadow-xl flex flex-col border-l border-t border-b border-gray-200">
+    <div 
+      style={{
+        position: 'fixed',
+        right: isVisible ? '0' : '-400px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        width: '384px',
+        height: '600px',
+        maxHeight: '80vh',
+        backgroundColor: 'white',
+        borderRadius: '0.5rem 0 0 0.5rem',
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        display: 'flex',
+        flexDirection: 'column',
+        borderLeft: '1px solid #e5e7eb',
+        borderTop: '1px solid #e5e7eb',
+        borderBottom: '1px solid #e5e7eb',
+        transition: 'right 0.3s ease-in-out',
+        zIndex: 9999
+      }}
+    >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center gap-2">
@@ -144,11 +152,11 @@ export const ChatInterface: React.FC = () => {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => setIsMinimized(true)}
+            onClick={onClose}
             className="h-8 w-8 p-1"
-            title="最小化"
+            title="关闭"
           >
-            <Minimize2 className="h-4 w-4 -rotate-90" />
+            <X className="h-4 w-4" />
           </Button>
         </div>
       </div>

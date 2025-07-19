@@ -6,12 +6,14 @@ import { StatusDisplay } from '@/components/drone/StatusDisplay';
 import { TelemetryChart } from '@/components/drone/TelemetryChart';
 import { Drone3DView } from '@/components/drone/Drone3DView';
 import { ChatInterface } from '@/src/components/ChatInterface/ChatInterface';
+import { AIAssistantButton } from '@/src/components/ChatInterface/AIAssistantButton';
 import { useWebSocket } from '@/lib/hooks/useWebSocket';
 import { Plane } from 'lucide-react';
 
 export default function Home() {
   const { telemetry, isConnected } = useWebSocket();
   const [isFlying, setIsFlying] = useState(false);
+  const [showAIChat, setShowAIChat] = useState(false);
 
   useEffect(() => {
     if (telemetry) {
@@ -79,8 +81,17 @@ export default function Home() {
         </div>
       </main>
 
-      {/* AI对话控制 - 浮动在页面右下角 */}
-      <ChatInterface />
+      {/* AI助手浮动按钮 */}
+      <AIAssistantButton 
+        onClick={() => setShowAIChat(!showAIChat)}
+        isOpen={showAIChat}
+      />
+
+      {/* AI对话控制 - 条件渲染 */}
+      <ChatInterface 
+        isVisible={showAIChat}
+        onClose={() => setShowAIChat(false)}
+      />
     </div>
   );
 } 
