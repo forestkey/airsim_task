@@ -5,6 +5,7 @@ import { ControlPanel } from '@/components/drone/ControlPanel';
 import { StatusDisplay } from '@/components/drone/StatusDisplay';
 import { TelemetryChart } from '@/components/drone/TelemetryChart';
 import { Drone3DView } from '@/components/drone/Drone3DView';
+import { ChatInterface } from '@/src/components/ChatInterface/ChatInterface';
 import { useWebSocket } from '@/lib/hooks/useWebSocket';
 import { Plane } from 'lucide-react';
 
@@ -77,6 +78,9 @@ export default function Home() {
           </p>
         </div>
       </main>
+
+      {/* AI对话控制 - 浮动在页面右下角 */}
+      <ChatInterface />
     </div>
   );
 } 

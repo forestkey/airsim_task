@@ -1,0 +1,13 @@
+.writing-mode-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* 添加一些过渡动画效果 */
+.chat-interface {
+  transition: transform 0.3s ease-in-out;
+}
+
+.chat-interface-minimized {
+  transform: translateX(100%);
+} 

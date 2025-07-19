@@ -5,7 +5,8 @@ import logging
 
 from app.core.config import settings
 from app.core.drone_client import drone_client
-from app.api import control, status
+from app.api import control, status, chat
+from app.mcp import mcp_router
 
 # 配置日志
 logging.basicConfig(
@@ -52,6 +53,19 @@ app.include_router(
     status.router,
     prefix=f"{settings.API_V1_STR}/status",
     tags=["status"]
+)
+
+app.include_router(
+    chat.router,
+    prefix=f"{settings.API_V1_STR}/chat",
+    tags=["chat"]
+)
+
+# MCP router for AI service integration
+app.include_router(
+    mcp_router,
+    prefix=f"{settings.API_V1_STR}/mcp",
+    tags=["mcp"]
 )
 
 @app.get("/")

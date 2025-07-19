@@ -10,7 +10,7 @@ export const Drone3DView: React.FC<Drone3DViewProps> = ({ telemetry }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (!canvasRef.current || !telemetry) return;
+    if (!canvasRef.current || !telemetry || !telemetry.position || !telemetry.attitude) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -143,7 +143,7 @@ export const Drone3DView: React.FC<Drone3DViewProps> = ({ telemetry }) => {
         </div>
 
         {/* Coordinates */}
-        {telemetry && (
+        {telemetry && telemetry.position && (
           <div className="absolute top-2 left-2 bg-white/90 p-2 rounded text-xs font-mono">
             <div>X: {telemetry.position.x.toFixed(2)}m</div>
             <div>Y: {telemetry.position.y.toFixed(2)}m</div>

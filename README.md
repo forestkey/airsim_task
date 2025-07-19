@@ -96,6 +96,16 @@ airsim_task/
 
 - **后端**: FastAPI, AirSim Python Client, WebSocket
 - **前端**: Next.js, TypeScript, Tailwind CSS, Recharts
+- **AI 功能**: Google Gemini API, MCP Protocol (新增)
+
+## AI 聊天功能（新增）
+
+系统现已支持通过自然语言控制无人机。详见 [AI_CHAT_SETUP_GUIDE.md](AI_CHAT_SETUP_GUIDE.md)
+
+### 快速体验
+1. 设置 AI 服务环境（Python 3.12）
+2. 启动所有服务：`start-all-services.bat`
+3. 在前端界面右下角使用 AI 助手
 
 ## 许可证
 

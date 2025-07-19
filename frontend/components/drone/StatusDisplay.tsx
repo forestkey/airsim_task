@@ -18,7 +18,10 @@ interface StatusDisplayProps {
 }
 
 export const StatusDisplay: React.FC<StatusDisplayProps> = ({ telemetry, isConnected }) => {
-  const formatNumber = (num: number, decimals: number = 2) => {
+  const formatNumber = (num: number | undefined | null, decimals: number = 2) => {
+    if (num === undefined || num === null || isNaN(num)) {
+      return '--';
+    }
     return num.toFixed(decimals);
   };
 
@@ -53,7 +56,7 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ telemetry, isConne
               <span className="text-sm text-gray-600">位置</span>
             </div>
             <div className="text-sm font-mono">
-              {telemetry ? (
+              {telemetry && telemetry.position ? (
                 <>
                   X: {formatNumber(telemetry.position.x)}m, 
                   Y: {formatNumber(telemetry.position.y)}m, 
@@ -71,7 +74,7 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ telemetry, isConne
               <span className="text-sm text-gray-600">高度</span>
             </div>
             <div className="text-sm font-mono">
-              {telemetry ? `${formatNumber(Math.abs(telemetry.position.z))}m` : '--'}
+              {telemetry && telemetry.position ? `${formatNumber(Math.abs(telemetry.position.z))}m` : '--'}
             </div>
           </div>
         </div>
@@ -83,19 +86,19 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ telemetry, isConne
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">Roll</span>
             <span className="text-sm font-mono">
-              {telemetry ? `${formatNumber(telemetry.attitude.roll)}°` : '--'}
+              {telemetry && telemetry.attitude ? `${formatNumber(telemetry.attitude.roll)}°` : '--'}
             </span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">Pitch</span>
             <span className="text-sm font-mono">
-              {telemetry ? `${formatNumber(telemetry.attitude.pitch)}°` : '--'}
+              {telemetry && telemetry.attitude ? `${formatNumber(telemetry.attitude.pitch)}°` : '--'}
             </span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">Yaw</span>
             <span className="text-sm font-mono">
-              {telemetry ? `${formatNumber(telemetry.attitude.yaw)}°` : '--'}
+              {telemetry && telemetry.attitude ? `${formatNumber(telemetry.attitude.yaw)}°` : '--'}
             </span>
           </div>
         </div>
@@ -110,7 +113,7 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ telemetry, isConne
               <span className="text-sm text-gray-600">速度</span>
             </div>
             <div className="text-sm font-mono">
-              {telemetry ? (
+              {telemetry && telemetry.velocity ? (
                 <>
                   {formatNumber(Math.sqrt(
                     telemetry.velocity.vx ** 2 + 
@@ -125,7 +128,7 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ telemetry, isConne
           </div>
 
           <div className="text-xs text-gray-500 font-mono">
-            {telemetry && (
+            {telemetry && telemetry.velocity && (
               <>
                 Vx: {formatNumber(telemetry.velocity.vx, 1)} 
                 Vy: {formatNumber(telemetry.velocity.vy, 1)} 
@@ -157,11 +160,11 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ telemetry, isConne
               <span className="text-sm text-gray-600">电池</span>
             </div>
             <span className={`text-sm font-medium ${
-              telemetry && telemetry.battery_level < 20 ? 'text-danger' : 
-              telemetry && telemetry.battery_level < 50 ? 'text-warning' : 
-              'text-success'
+              telemetry && telemetry.battery_level !== undefined && telemetry.battery_level < 20 ? 'text-danger' : 
+              telemetry && telemetry.battery_level !== undefined && telemetry.battery_level < 50 ? 'text-warning' : 
+              telemetry && telemetry.battery_level !== undefined ? 'text-success' : 'text-gray-400'
             }`}>
-              {telemetry ? `${formatNumber(telemetry.battery_level, 0)}%` : '--'}
+              {telemetry && telemetry.battery_level !== undefined ? `${formatNumber(telemetry.battery_level, 0)}%` : '--'}
             </span>
           </div>
         </div>

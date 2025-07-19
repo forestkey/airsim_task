@@ -22,7 +22,7 @@ export const TelemetryChart: React.FC<TelemetryChartProps> = ({
   const [data, setData] = useState<ChartData[]>([]);
 
   useEffect(() => {
-    if (!telemetry) return;
+    if (!telemetry || !telemetry.position || !telemetry.velocity) return;
 
     const newDataPoint: ChartData = {
       time: new Date().toLocaleTimeString(),
@@ -97,7 +97,7 @@ export const TelemetryChart: React.FC<TelemetryChartProps> = ({
       </div>
       
       {/* 实时数据显示 */}
-      {telemetry && (
+      {telemetry && telemetry.position && telemetry.velocity && (
         <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t">
           <div className="text-center">
             <p className="text-sm text-gray-600">当前高度</p>
