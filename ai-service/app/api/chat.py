@@ -67,11 +67,8 @@ async def chat_message(request: ChatRequest):
             session_id=session_id
         )
         
-        # Send WebSocket update if connected
-        await manager.send_message(session_id, WSMessage(
-            type="ai_reply",
-            data=response.dict()
-        ))
+        # Don't send WebSocket update for HTTP requests
+        # The WebSocket handler will send updates for WebSocket messages
         
         return response
         
@@ -125,7 +122,8 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                 type="ai_reply",
                 data={
                     "reply": reply,
-                    "tool_calls": [tc.dict() for tc in tool_calls]
+                    "tool_calls": [tc.dict() for tc in tool_calls],
+                    "timestamp": datetime.utcnow().isoformat()
                 }
             ))
             
