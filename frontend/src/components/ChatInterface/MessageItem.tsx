@@ -36,12 +36,12 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
           {/* Message bubble */}
           <div className={`rounded-lg px-4 py-2 ${
             isUser 
-              ? 'bg-blue-500 text-white' 
+              ? 'bg-blue-100 text-blue-900 border border-blue-200' 
               : isSystem 
               ? 'bg-yellow-100 text-yellow-800 border border-yellow-200'
               : 'bg-gray-100 text-gray-800'
           }`}>
-            <p className="whitespace-pre-wrap">{message.content}</p>
+            <p className="whitespace-pre-wrap break-words">{message.content || '[空消息]'}</p>
           </div>
 
           {/* Tool calls */}

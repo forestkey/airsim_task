@@ -8,6 +8,9 @@ interface MessageListProps {
 }
 
 export const MessageList: React.FC<MessageListProps> = ({ messages, isLoading }) => {
+  // Debug log
+  console.log('[MessageList] Rendering with messages:', messages.length, messages)
+  
   return (
     <div className="flex-1 overflow-y-auto p-4 space-y-4">
       {messages.length === 0 && (

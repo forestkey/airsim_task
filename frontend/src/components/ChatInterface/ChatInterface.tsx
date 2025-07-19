@@ -28,6 +28,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isVisible, onClose
   }, [messages])
 
   useEffect(() => {
+    // Only connect if visible
+    if (!isVisible) return
+    
     // Connect to WebSocket
     chatService.connectWebSocket(
       (data: any) => {
@@ -40,7 +43,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isVisible, onClose
             timestamp: new Date().toISOString(),
             tool_calls: data.data.tool_calls,
           }
-          setMessages(prev => [...prev, aiMessage])
+          // Use functional update to ensure we have latest state
+          setMessages(prevMessages => {
+            console.log('[ChatInterface] Adding AI reply, current messages:', prevMessages.length)
+            return [...prevMessages, aiMessage]
+          })
           setIsLoading(false)
         } else if (data.type === 'status_update') {
           // Handle status updates if needed
@@ -63,7 +70,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isVisible, onClose
     return () => {
       chatService.disconnectWebSocket()
     }
-  }, [])
+  }, [isVisible])
 
   const handleSendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return
@@ -74,7 +81,13 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isVisible, onClose
       content,
       timestamp: new Date().toISOString(),
     }
-    setMessages(prev => [...prev, userMessage])
+    console.log('[ChatInterface] Adding user message:', content)
+    setMessages(prev => {
+      console.log('[ChatInterface] Current messages before adding user:', prev.length)
+      const newMessages = [...prev, userMessage]
+      console.log('[ChatInterface] Messages after adding user:', newMessages.length)
+      return newMessages
+    })
     setIsLoading(true)
 
     try {
@@ -163,7 +176,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ isVisible, onClose
 
       {/* Messages */}
       <div className="flex-1 overflow-hidden">
-        <MessageList messages={messages} isLoading={isLoading} />
+        <MessageList key={messages.length} messages={messages} isLoading={isLoading} />
         <div ref={messagesEndRef} />
       </div>
 
